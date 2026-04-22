@@ -209,6 +209,7 @@ def main():
     args = parser.parse_args()
 
     # 기간 기본값 설정
+    # 수정 참고
     if args.mode == "MON":
         default_from, default_to = default_period()
         period_from = args.period_from or default_from
