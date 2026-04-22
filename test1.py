@@ -34,6 +34,9 @@ gs = gridspec.GridSpec(
     wspace=0.35,
 )
 
+# ddd
+a = 1
+
 # ── 1. Tier1 파이차트 ──────────────────────────────────────────────
 ax1 = fig.add_subplot(gs[0, 0])
 tier1_counts = df["Tier1(상위섹터)"].value_counts()
