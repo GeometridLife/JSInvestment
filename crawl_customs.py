@@ -211,6 +211,7 @@ def main():
     # 기간 기본값 설정
     # 수정 참고
     # dd
+    # ddd
     if args.mode == "MON":
         default_from, default_to = default_period()
         period_from = args.period_from or default_from
