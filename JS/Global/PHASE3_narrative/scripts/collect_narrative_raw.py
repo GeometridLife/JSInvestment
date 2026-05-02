@@ -54,6 +54,10 @@ RUN_TS = dt.datetime.now().strftime("%Y%m%d_%H%M%S")
 GDELT_ENDPOINT = "https://api.gdeltproject.org/api/v2/doc/doc"
 FINNHUB_ENDPOINT = "https://finnhub.io/api/v1/company-news"
 REDDIT_SUBREDDITS = ["stocks", "investing", "wallstreetbets", "options", "ValueInvesting"]
+FINNHUB_SYMBOL_ALIASES = {
+    "BRK-A": "BRK.A",
+    "BRK-B": "BRK.B",
+}
 
 HEADERS = {
     "User-Agent": (
@@ -146,9 +150,12 @@ def build_aliases(company_name: str) -> list[str]:
 
 
 def gdelt_query(aliases: list[str]) -> str:
-    # For news, prefer the legal company name. Short aliases such as "Apple"
-    # are too noisy in global news search.
-    exact = [f'"{alias}"' for alias in aliases[:1] if alias]
+    # For news, prefer exact company names. Add a short alias only when it is
+    # specific enough; otherwise names such as "Apple" become noisy quickly.
+    selected = aliases[:1]
+    if len(aliases) > 1 and len(aliases[1].split()) >= 2:
+        selected.append(aliases[1])
+    exact = [f'"{alias}"' for alias in selected if alias]
     return f"({' OR '.join(exact)})" if len(exact) > 1 else exact[0]
 
 
@@ -284,7 +291,7 @@ def collect_finnhub(
 ) -> tuple[list[dict], list[dict]]:
     ticker = row["ticker"]
     company = row["company_name"]
-    query = ticker
+    query = FINNHUB_SYMBOL_ALIASES.get(str(ticker).upper(), ticker)
     records: list[dict] = []
     errors: list[dict] = []
 
