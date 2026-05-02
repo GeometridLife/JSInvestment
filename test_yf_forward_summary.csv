@@ -1,0 +1,40 @@
+﻿group,field,coverage_pct,non_null_count,total
+Forward Valuation,forwardPE,100.0,14,14
+Forward Valuation,forwardEps,100.0,14,14
+Forward Valuation,pegRatio,92.9,13,14
+Forward Valuation,trailingPegRatio,85.7,12,14
+Trailing Valuation (fallback),trailingPE,92.9,13,14
+Trailing Valuation (fallback),trailingEps,100.0,14,14
+Trailing Valuation (fallback),priceToBook,100.0,14,14
+Trailing Valuation (fallback),priceToSalesTrailing12Months,100.0,14,14
+Forward Growth (target),earningsGrowth,92.9,13,14
+Forward Growth (target),revenueGrowth,100.0,14,14
+Forward Growth (target),earningsQuarterlyGrowth,92.9,13,14
+Forward Growth (target),revenueQuarterlyGrowth,0.0,0,14
+Profitability (참고),profitMargins,100.0,14,14
+Profitability (참고),operatingMargins,100.0,14,14
+Profitability (참고),returnOnEquity,100.0,14,14
+Profitability (참고),returnOnAssets,100.0,14,14
+Profitability (참고),grossMargins,92.9,13,14
+Shareholder Return,dividendYield,71.4,10,14
+Shareholder Return,dividendRate,71.4,10,14
+Shareholder Return,payoutRatio,71.4,10,14
+Shareholder Return,fiveYearAvgDividendYield,64.3,9,14
+Shareholder Return,lastDividendValue,71.4,10,14
+Financial Health (필터용),debtToEquity,92.9,13,14
+Financial Health (필터용),currentRatio,92.9,13,14
+Financial Health (필터용),quickRatio,92.9,13,14
+Financial Health (필터용),totalCash,100.0,14,14
+Financial Health (필터용),totalDebt,100.0,14,14
+Financial Health (필터용),totalRevenue,100.0,14,14
+Financial Health (필터용),ebitda,92.9,13,14
+Capital Structure,sharesOutstanding,100.0,14,14
+Capital Structure,floatShares,100.0,14,14
+Capital Structure,sharesShort,100.0,14,14
+Capital Structure,marketCap,100.0,14,14
+Capital Structure,enterpriseValue,100.0,14,14
+Meta,sector,100.0,14,14
+Meta,industry,100.0,14,14
+Meta,country,100.0,14,14
+Meta,currency,100.0,14,14
+Meta,exchange,100.0,14,14

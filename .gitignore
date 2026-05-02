@@ -1,0 +1,66 @@
+# =====================================================
+# JS Investment — .gitignore
+# =====================================================
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+env/
+.Python
+
+# ---- Node (PHASE5_report) ----
+node_modules/
+package-lock.json
+yarn.lock
+
+# ---- IDE / Editor ----
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- 민감 정보 (절대 push 금지) ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*
+
+# ---- Excel/Office 임시 lock 파일 ----
+~$*.xlsx
+~$*.xls
+~$*.docx
+~$*.pptx
+
+# ---- 캐시 (재생성 가능, 대용량) ----
+**/cache/
+**/.momentum_cache.pkl
+docs_cache/
+
+# ---- 로그 (매일 누적, noise) ----
+**/logs/
+*.log
+
+# ---- 결과 / 차트는 포함됩니다 ----
+# results/, charts/, charts/, result/ 디렉토리는 git에 포함
+# (재실행 비용 크므로 결과 이력 백업)
+
+# ---- 임시 / 빌드 ----
+*.tmp
+*.bak
+build/
+dist/
+
+# ---- PDF (외부 사업보고서 + 분석 결과 PDF, 사이즈 큼) ----
+*.pdf

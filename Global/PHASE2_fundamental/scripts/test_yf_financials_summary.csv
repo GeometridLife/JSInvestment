@@ -1,0 +1,24 @@
+﻿group,field,coverage_pct,success_count,total,avg_years_available
+Income,Revenue,100.0,14,14,4.0
+Income,OperatingIncome,85.7,12,14,4.0
+Income,NetIncome,100.0,14,14,4.0
+Income,InterestExpense,92.9,13,14,3.9
+Income,EBITDA,85.7,12,14,4.0
+Income,DilutedEPS,100.0,14,14,4.0
+Income,DilutedShares,100.0,14,14,4.0
+Balance Sheet,TotalAssets,100.0,14,14,4.0
+Balance Sheet,TotalLiabilities,100.0,14,14,4.0
+Balance Sheet,StockholdersEquity,100.0,14,14,4.0
+Balance Sheet,TotalDebt,100.0,14,14,3.9
+Balance Sheet,LongTermDebt,92.9,13,14,4.0
+Balance Sheet,CurrentAssets,85.7,12,14,4.0
+Balance Sheet,CurrentLiabilities,85.7,12,14,4.0
+Balance Sheet,CashAndEquivalents,100.0,14,14,4.0
+Cash Flow,OperatingCashFlow,100.0,14,14,4.0
+Cash Flow,FreeCashFlow,100.0,14,14,4.0
+Cash Flow,CashDividendsPaid,78.6,11,14,3.7
+Cash Flow,RepurchaseOfStock,92.9,13,14,3.8
+Cash Flow,IssuanceOfStock,57.1,8,14,3.4
+Cash Flow,IssuanceOfDebt,92.9,13,14,4.0
+Cash Flow,RepaymentOfDebt,92.9,13,14,4.0
+Cash Flow,CapitalExpenditure,85.7,12,14,4.0

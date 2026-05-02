@@ -1,0 +1,136 @@
+{
+  "meta": {
+    "edgar_identity": "JS Investment limited8090@gmail.com",
+    "sample_count": 7,
+    "success_count": 7,
+    "error_count": 0,
+    "total_elapsed_sec": 67.1
+  },
+  "coverage": {
+    "Revenue": {
+      "success_count": 0,
+      "total": 7,
+      "pct": 0.0
+    },
+    "OperatingIncome": {
+      "success_count": 0,
+      "total": 7,
+      "pct": 0.0
+    },
+    "NetIncome": {
+      "success_count": 0,
+      "total": 7,
+      "pct": 0.0
+    },
+    "InterestExpense": {
+      "success_count": 0,
+      "total": 7,
+      "pct": 0.0
+    },
+    "EPS_Basic": {
+      "success_count": 0,
+      "total": 7,
+      "pct": 0.0
+    },
+    "EPS_Diluted": {
+      "success_count": 0,
+      "total": 7,
+      "pct": 0.0
+    },
+    "StockholdersEquity": {
+      "success_count": 0,
+      "total": 7,
+      "pct": 0.0
+    },
+    "TotalAssets": {
+      "success_count": 0,
+      "total": 7,
+      "pct": 0.0
+    },
+    "TotalLiabilities": {
+      "success_count": 0,
+      "total": 7,
+      "pct": 0.0
+    },
+    "LongTermDebt": {
+      "success_count": 0,
+      "total": 7,
+      "pct": 0.0
+    },
+    "CurrentAssets": {
+      "success_count": 0,
+      "total": 7,
+      "pct": 0.0
+    },
+    "CurrentLiabilities": {
+      "success_count": 0,
+      "total": 7,
+      "pct": 0.0
+    },
+    "DividendsPaid": {
+      "success_count": 0,
+      "total": 7,
+      "pct": 0.0
+    },
+    "StockRepurchase": {
+      "success_count": 0,
+      "total": 7,
+      "pct": 0.0
+    },
+    "OperatingCashFlow": {
+      "success_count": 0,
+      "total": 7,
+      "pct": 0.0
+    },
+    "SharesOutstanding": {
+      "success_count": 0,
+      "total": 7,
+      "pct": 0.0
+    }
+  },
+  "results": {
+    "AAPL": {
+      "sector": "IT",
+      "elapsed_sec": 5.2,
+      "_filing_used": "0000320193-25-000079",
+      "_filing_date": "2025-10-31"
+    },
+    "JPM": {
+      "sector": "Financial",
+      "elapsed_sec": 38.4,
+      "_filing_used": "0001628280-26-008131",
+      "_filing_date": "2026-02-13"
+    },
+    "UNH": {
+      "sector": "Healthcare",
+      "elapsed_sec": 5.6,
+      "_filing_used": "0000731766-26-000062",
+      "_filing_date": "2026-03-02"
+    },
+    "XOM": {
+      "sector": "Energy",
+      "elapsed_sec": 3.3,
+      "_filing_used": "0000034088-26-000045",
+      "_filing_date": "2026-02-18"
+    },
+    "CAT": {
+      "sector": "Industrial",
+      "elapsed_sec": 4.3,
+      "_filing_used": "0000018230-26-000008",
+      "_filing_date": "2026-02-13"
+    },
+    "NEE": {
+      "sector": "Utility",
+      "elapsed_sec": 3.3,
+      "_filing_used": "0000753308-26-000015",
+      "_filing_date": "2026-02-13"
+    },
+    "PG": {
+      "sector": "Cons Staples",
+      "elapsed_sec": 3.5,
+      "_filing_used": "0000080424-25-000076",
+      "_filing_date": "2025-08-04"
+    }
+  },
+  "errors": {}
+}

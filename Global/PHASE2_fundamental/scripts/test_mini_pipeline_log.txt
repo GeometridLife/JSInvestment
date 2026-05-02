@@ -1,0 +1,128 @@
+========================================================================
+PHASE2 미니 파이프라인 통합 테스트 — 30종목
+EDGAR_IDENTITY: JS Investment limited8090@gmail.com
+========================================================================
+
+[Step 1/3] EDGAR 재무제표 수집...
+  [ 1/30] AAPL   (Information Techno) Rev=  416.2B (2.0s) ok
+  [ 2/30] MSFT   (Information Techno) Rev=  281.7B (6.8s) ok
+  [ 3/30] UPST   (Information Techno) Rev=    1.0B (1.3s) ok
+  [ 4/30] JPM    (Financials        ) Rev=  182.4B (2.8s) ok
+  [ 5/30] BAC    (Financials        ) Rev=  113.1B (3.2s) ok
+  [ 6/30] GS     (Financials        ) Rev=     N/A (2.7s) ok
+  [ 7/30] UNH    (Health Care       ) Rev=  447.6B (1.8s) ok
+  [ 8/30] JNJ    (Health Care       ) Rev=   94.2B (1.5s) ok
+  [ 9/30] LLY    (Health Care       ) Rev=   65.2B (1.7s) ok
+  [10/30] AMZN   (Consumer Discretio) Rev=  716.9B (1.6s) ok
+  [11/30] TSLA   (Consumer Discretio) Rev=   94.8B (2.4s) ok
+  [12/30] NKE    (Consumer Discretio) Rev=   46.3B (1.7s) ok
+  [13/30] PG     (Consumer Staples  ) Rev=   84.3B (1.5s) ok
+  [14/30] KO     (Consumer Staples  ) Rev=   47.9B (2.5s) ok
+  [15/30] XOM    (Energy            ) Rev=  332.2B (1.7s) ok
+  [16/30] CVX    (Energy            ) Rev=  184.4B (1.9s) ok
+  [17/30] CAT    (Industrials       ) Rev=   67.6B (2.2s) ok
+  [18/30] UNP    (Industrials       ) Rev=   24.5B (3.0s) ok
+  [19/30] GE     (Industrials       ) Rev=   45.9B (2.1s) ok
+  [20/30] LIN    (Materials         ) Rev=   34.0B (1.1s) ok
+  [21/30] SHW    (Materials         ) Rev=   23.6B (2.4s) ok
+  [22/30] NEE    (Utilities         ) Rev=   25.8B (2.2s) ok
+  [23/30] SO     (Utilities         ) Rev=   29.6B (1.8s) ok
+  [24/30] PLD    (Real Estate       ) Rev=    8.8B (1.8s) ok
+  [25/30] AMT    (Real Estate       ) Rev=    0.9B (2.2s) ok
+  [26/30] GOOGL  (Communication Serv) Rev=  402.8B (1.2s) ok
+  [27/30] META   (Communication Serv) Rev=  201.0B (1.7s) ok
+  [28/30] NFLX   (Communication Serv) Rev=   45.2B (1.6s) ok
+  [29/30] CROX   (Consumer Discretio) Rev=    4.0B (2.1s) ok
+  [30/30] ANET   (Information Techno) Rev=    9.0B (1.5s) ok
+  EDGAR 수집 소요: 67.1s
+
+[Step 2/3] yfinance Ticker.info 수집...
+  [ 1/30] AAPL   fwdPE=29.812311 mc=4109B (1.4s)
+  [ 2/30] MSFT   fwdPE=21.498459 mc=3079B (0.4s)
+  [ 3/30] UPST   fwdPE=10.3098955 mc=   3B (0.4s)
+  [ 4/30] JPM    fwdPE=13.290585 mc= 837B (0.4s)
+  [ 5/30] BAC    fwdPE=10.559406 mc= 380B (0.4s)
+  [ 6/30] GS     fwdPE=14.133632 mc= 274B (0.4s)
+  [ 7/30] UNH    fwdPE=17.769388 mc= 335B (0.4s)
+  [ 8/30] JNJ    fwdPE=17.874283 mc= 547B (0.4s)
+  [ 9/30] LLY    fwdPE=22.059313 mc= 862B (0.4s)
+  [10/30] AMZN   fwdPE=27.303652 mc=2885B (0.4s)
+  [11/30] TSLA   fwdPE=154.14774 mc=1468B (0.4s)
+  [12/30] NKE    fwdPE=24.051483 mc=  66B (0.4s)
+  [13/30] PG     fwdPE=20.702675 mc= 343B (0.5s)
+  [14/30] KO     fwdPE=22.612886 mc= 338B (0.4s)
+  [15/30] XOM    fwdPE=15.022768 mc= 635B (0.5s)
+  [16/30] CVX    fwdPE=16.180164 mc= 380B (0.4s)
+  [17/30] CAT    fwdPE=30.703081 mc= 414B (0.4s)
+  [18/30] UNP    fwdPE=19.458733 mc= 158B (0.4s)
+  [19/30] GE     fwdPE=32.979458 mc= 299B (0.4s)
+  [20/30] LIN    fwdPE=25.769663 mc= 235B (0.4s)
+  [21/30] SHW    fwdPE=23.94948 mc=  78B (0.5s)
+  [22/30] NEE    fwdPE=22.086042 mc= 202B (0.5s)
+  [23/30] SO     fwdPE=19.658543 mc= 109B (0.4s)
+  [24/30] PLD    fwdPE=41.617126 mc= 132B (0.5s)
+  [25/30] AMT    fwdPE=26.344152 mc=  85B (0.5s)
+  [26/30] GOOGL  fwdPE=28.510286 mc=4673B (0.5s)
+  [27/30] META   fwdPE=16.826385 mc=1545B (0.5s)
+  [28/30] NFLX   fwdPE=23.966032 mc= 388B (0.5s)
+  [29/30] CROX   fwdPE=7.3225574 mc=   5B (0.5s)
+  [30/30] ANET   fwdPE=40.055477 mc= 217B (0.5s)
+  yfinance 수집 소요: 28.9s
+
+[Step 3/3] 통합 + 필터 + 스코어링...
+  필터: 통과 30/30, 제외 0
+
+========================================================================
+검증 메트릭
+========================================================================
+
+[1] EDGAR 필드 커버리지
+  ✓ Revenue                    96.7%
+  △ OperatingIncome            83.3%
+  ✓ NetIncome                 100.0%
+  △ InterestExpense            83.3%
+  △ StockholdersEquity         86.7%
+  △ LongTermDebt               86.7%
+  ✗ DividendsPaid              70.0%
+  △ StockRepurchase            86.7%
+
+[2] yfinance 필드 커버리지
+  ✓ forwardPE                 100.0%
+  ✓ forwardEps                100.0%
+  ✓ earningsGrowth             96.7%
+  ✓ revenueGrowth             100.0%
+  ✓ trailingPE                 96.7%
+  ✓ marketCap                 100.0%
+  ✓ dividendYield              80.0%
+
+[3] 필터 적발 — 다중 시그널 + 섹터 임계값
+  · 단독 제외(자본잠식/시총누락): 0종목
+  · 다중 시그널 제외(2+ 위반)   : 0종목
+  · 1개 위반 (경고만, 통과)     : 3종목
+  · 위반 0 (정상)              : 27종목
+
+  위반 항목별 카운트 (단독 제외 안 된 종목 중):
+    - 고부채          1종목 위반
+    - 이자보상미달       1종목 위반
+    - 3년영업적자       0종목 위반
+    - 3년OCF음수      1종목 위반
+
+[4] 카테고리 점수 분포 (필터 통과 종목)
+  · cat_valuation             n=30, min=0.067, max=0.983, mean=0.509
+  · cat_growth                n=30, min=0.034, max=0.966, mean=0.509
+  · cat_shareholder           n=30, min=0.037, max=0.963, mean=0.525
+  · fundamental_score         n=30, min=0.004, max=0.499, mean=0.257
+
+[5] 그룹 분포
+  · Large   28종목
+  · Mid     2종목
+
+[6] Forward / Trailing 비율
+  · 밸류에이션 Forward: 30/30
+  · 성장성 Forward    : 30/30
+
+========================================================================
+산출 파일
+========================================================================
+  · test_mini_pipeline_result.xlsx
+  · test_mini_pipeline_metrics.csv

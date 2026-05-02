@@ -1,0 +1,35 @@
+# 캐시 (대용량)
+*.pkl
+daily_cache.pkl
+weekly_cache.pkl
+
+# 결과물 (매일 재생성)
+*_backtest.xlsx
+*_ranking.xlsx
+*_forward_distribution.xlsx
+*_classification_master.xlsx
+*_classification_master_verified.xlsx
+*_collection_log.csv
+update_history.csv
+
+# 차트 (매일 재생성)
+*_charts/
+*_ranking_charts/
+
+# 이미지
+*.png
+
+# 파이썬
+__pycache__/
+*.pyc
+.env
+
+# OS
+Thumbs.db
+.DS_Store
+
+# 원본 데이터 (개인 파일)
+*.xls
+*.csv
+!*research.md
+!*planning.md

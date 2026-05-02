@@ -1,0 +1,17 @@
+﻿statement,field,coverage_pct,success_count,total,avg_depth_periods
+IncomeStatement,Revenue,100.0,7,7,9.6
+IncomeStatement,OperatingIncome,85.7,6,7,13.8
+IncomeStatement,NetIncome,100.0,7,7,15.0
+IncomeStatement,InterestExpense,71.4,5,7,14.6
+IncomeStatement,EPS_Basic,100.0,7,7,14.9
+IncomeStatement,EPS_Diluted,100.0,7,7,14.9
+BalanceSheet,TotalAssets,100.0,7,7,15.0
+BalanceSheet,TotalLiabilities,100.0,7,7,14.4
+BalanceSheet,StockholdersEquity,100.0,7,7,10.7
+BalanceSheet,LongTermDebt,85.7,6,7,14.2
+BalanceSheet,CurrentAssets,100.0,7,7,15.0
+BalanceSheet,CurrentLiabilities,100.0,7,7,15.0
+CashFlowStatement,OperatingCashFlow,100.0,7,7,14.3
+CashFlowStatement,DividendsPaid,100.0,7,7,15.4
+CashFlowStatement,StockRepurchase,85.7,6,7,14.8
+CashFlowStatement,CapitalExpenditure,71.4,5,7,14.2
