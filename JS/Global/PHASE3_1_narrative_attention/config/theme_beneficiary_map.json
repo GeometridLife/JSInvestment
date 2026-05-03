@@ -1,0 +1,58 @@
+{
+  "Data Center Capex": {
+    "pure_play": ["VRT", "SMCI", "DELL", "ANET"],
+    "enabler": ["NVDA", "AMD", "AVGO", "TSM", "ASML", "MU", "ARM"],
+    "adopter": ["MSFT", "AMZN", "GOOGL", "GOOG", "META", "ORCL"],
+    "sympathetic": ["ETN", "GEV", "CEG", "VST", "BE"],
+    "keywords": ["data center", "AI capex", "hyperscaler", "server rack", "power demand"]
+  },
+  "Robotics And Automation": {
+    "pure_play": ["ISRG", "TER", "ROK", "ZBRA", "SYM"],
+    "enabler": ["NVDA", "AMD", "AVGO", "TSLA"],
+    "adopter": ["META", "AMZN", "GOOGL", "GOOG"],
+    "sympathetic": ["ABBNY", "IRBT", "PATH"],
+    "keywords": ["robotics", "humanoid robot", "automation", "industrial robot"]
+  },
+  "Quantum Computing": {
+    "pure_play": ["IONQ", "RGTI", "QBTS", "QUBT"],
+    "enabler": ["IBM", "HON", "NVDA", "GOOGL", "GOOG"],
+    "adopter": ["MSFT", "AMZN"],
+    "sympathetic": ["ARQQ"],
+    "keywords": ["quantum computing", "quantum computer", "qubit"]
+  },
+  "Grid And Power Equipment": {
+    "pure_play": ["ETN", "GEV", "VRT", "BE", "FLNC"],
+    "enabler": ["CEG", "VST", "FSLR", "ENPH"],
+    "adopter": ["ORCL", "MSFT", "AMZN", "GOOGL", "GOOG", "META"],
+    "sympathetic": ["NEE", "SO", "DUK"],
+    "keywords": ["power demand", "electric grid", "transformer", "power equipment", "data center power"]
+  },
+  "AI Infrastructure": {
+    "pure_play": ["NVDA", "AMD", "AVGO", "TSM", "ASML", "ARM"],
+    "enabler": ["MU", "MRVL", "ANET", "VRT", "DELL", "SMCI"],
+    "adopter": ["MSFT", "AMZN", "GOOGL", "GOOG", "META", "ORCL"],
+    "sympathetic": ["PLTR", "SNOW"],
+    "keywords": ["AI chip", "GPU", "accelerator", "AI infrastructure"]
+  },
+  "Memory And HBM": {
+    "pure_play": ["MU", "WDC", "STX"],
+    "enabler": ["NVDA", "AMD", "AVGO", "TSM", "ASML"],
+    "adopter": ["MSFT", "AMZN", "GOOGL", "GOOG", "META"],
+    "sympathetic": ["LRCX", "AMAT", "KLAC"],
+    "keywords": ["HBM", "high bandwidth memory", "DRAM", "NAND", "memory shortage"]
+  },
+  "Stablecoin And Crypto Policy": {
+    "pure_play": ["COIN", "MSTR", "RIOT", "MARA", "CLSK"],
+    "enabler": ["HOOD", "V", "MA", "PYPL", "SQ"],
+    "adopter": ["JPM", "GS", "MS"],
+    "sympathetic": ["IBIT", "BITO"],
+    "keywords": ["stablecoin", "crypto regulation", "Bitcoin", "digital asset"]
+  },
+  "GLP-1 And Obesity Drugs": {
+    "pure_play": ["LLY", "NVO", "VKTX"],
+    "enabler": ["AMGN", "PFE", "MRK"],
+    "adopter": ["HIMS"],
+    "sympathetic": ["DXCM", "TNDM"],
+    "keywords": ["GLP-1", "Wegovy", "Ozempic", "Zepbound", "obesity drug"]
+  }
+}

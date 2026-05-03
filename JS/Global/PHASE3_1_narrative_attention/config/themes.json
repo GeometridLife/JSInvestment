@@ -1,0 +1,114 @@
+[
+  {
+    "sector_group": "Semiconductors",
+    "theme": "AI Infrastructure",
+    "items": ["GPU", "accelerator", "CUDA", "AI chip"],
+    "keywords": ["AI chip", "GPU", "accelerator", "CUDA", "AI infrastructure", "AI server", "AI processor", "generative AI"],
+    "exclude_keywords": ["potato chip"]
+  },
+  {
+    "sector_group": "Semiconductors",
+    "theme": "Memory And HBM",
+    "items": ["HBM", "DRAM", "memory shortage"],
+    "keywords": ["HBM", "high bandwidth memory", "DRAM", "NAND", "memory shortage", "memory chip"],
+    "exclude_keywords": []
+  },
+  {
+    "sector_group": "Cloud Infrastructure",
+    "theme": "Data Center Capex",
+    "items": ["data center", "cloud capex", "AI capex"],
+    "keywords": ["data center", "datacenter", "cloud capex", "AI capex", "capital expenditure", "server rack", "hyperscaler"],
+    "exclude_keywords": []
+  },
+  {
+    "sector_group": "Power Infrastructure",
+    "theme": "Grid And Power Equipment",
+    "items": ["grid", "transformer", "power demand"],
+    "keywords": ["power demand", "electric grid", "grid upgrade", "transformer", "power equipment", "data center power"],
+    "exclude_keywords": ["political power", "balance of power"]
+  },
+  {
+    "sector_group": "Power Infrastructure",
+    "theme": "Nuclear Renaissance",
+    "items": ["SMR", "uranium", "nuclear power"],
+    "keywords": ["nuclear power", "SMR", "small modular reactor", "uranium", "nuclear plant", "nuclear reactor"],
+    "exclude_keywords": ["nuclear weapon", "nuclear weapons"]
+  },
+  {
+    "sector_group": "Healthcare",
+    "theme": "GLP-1 And Obesity Drugs",
+    "items": ["Wegovy", "Ozempic", "Zepbound"],
+    "keywords": ["GLP-1", "GLP1", "Wegovy", "Ozempic", "Zepbound", "obesity drug", "weight loss drug"],
+    "exclude_keywords": []
+  },
+  {
+    "sector_group": "Digital Assets",
+    "theme": "Stablecoin And Crypto Policy",
+    "items": ["stablecoin", "crypto regulation", "Bitcoin"],
+    "keywords": ["stablecoin", "crypto regulation", "digital asset", "Bitcoin", "Ethereum", "crypto policy", "spot bitcoin ETF"],
+    "exclude_keywords": []
+  },
+  {
+    "sector_group": "Emerging Tech",
+    "theme": "Quantum Computing",
+    "items": ["qubit", "quantum computer"],
+    "keywords": ["quantum computing", "quantum computer", "qubit", "quantum chip"],
+    "exclude_keywords": []
+  },
+  {
+    "sector_group": "Industrials",
+    "theme": "Reshoring And Manufacturing",
+    "items": ["reshoring", "CHIPS Act", "manufacturing"],
+    "keywords": ["reshoring", "onshoring", "CHIPS Act", "manufacturing capacity", "factory investment", "domestic manufacturing"],
+    "exclude_keywords": []
+  },
+  {
+    "sector_group": "Automation",
+    "theme": "Robotics And Automation",
+    "items": ["humanoid robot", "automation", "robotics"],
+    "keywords": ["humanoid robot", "robotics", "automation", "industrial robot", "surgical robot"],
+    "exclude_keywords": []
+  },
+  {
+    "sector_group": "Consumer Internet",
+    "theme": "Ecommerce And Ads",
+    "items": ["online ads", "marketplace", "retail media"],
+    "keywords": ["ecommerce", "e-commerce", "online advertising", "ad revenue", "retail media", "marketplace"],
+    "exclude_keywords": []
+  },
+  {
+    "sector_group": "Consumer Hardware",
+    "theme": "Smartphone And Devices",
+    "items": ["iPhone", "smartphone", "wearables"],
+    "keywords": ["iPhone", "smartphone", "wearable", "MacBook", "iPad", "device sales", "handset"],
+    "exclude_keywords": []
+  },
+  {
+    "sector_group": "Macro Policy",
+    "theme": "Tariffs And Supply Chain",
+    "items": ["tariff", "China supply chain", "customs"],
+    "keywords": ["tariff", "tariffs", "trade war", "supply chain", "customs duty", "China exposure", "export control"],
+    "exclude_keywords": []
+  },
+  {
+    "sector_group": "Financials",
+    "theme": "Banking And Credit",
+    "items": ["credit loss", "loan growth", "net interest income"],
+    "keywords": ["net interest income", "loan growth", "credit loss", "charge-off", "deposit growth", "investment banking fees"],
+    "exclude_keywords": []
+  },
+  {
+    "sector_group": "Event",
+    "theme": "Earnings And Buybacks",
+    "items": ["earnings", "guidance", "buyback"],
+    "keywords": ["earnings", "quarterly results", "guidance", "revenue forecast", "buyback", "share repurchase", "dividend"],
+    "exclude_keywords": []
+  },
+  {
+    "sector_group": "Risk",
+    "theme": "Regulatory And Legal Risk",
+    "items": ["lawsuit", "antitrust", "probe"],
+    "keywords": ["lawsuit", "antitrust", "regulatory probe", "investigation", "FTC", "DOJ", "SEC probe", "class action"],
+    "exclude_keywords": []
+  }
+]
