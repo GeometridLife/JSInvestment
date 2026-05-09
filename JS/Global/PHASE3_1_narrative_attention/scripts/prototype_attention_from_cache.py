@@ -184,22 +184,26 @@ def build_theme_matches(raw: pd.DataFrame, themes: list[dict[str, Any]]) -> pd.D
         if not matches:
             continue
         fractional = 1.0 / len(matches)
+        tickers = infer_mentioned_tickers(row)
+        if not tickers:
+            tickers = [""]
         for match in matches:
-            rows.append(
-                {
-                    "article_id": row["article_id"],
-                    "date": row["date"],
-                    "source_type": row["source_type"],
-                    "source": row["source"],
-                    "ticker": row.get("ticker", ""),
-                    "title": row["title"],
-                    "url": row.get("url", ""),
-                    "published_at": row["published_at_ts"].isoformat(),
-                    "engagement": row["engagement"],
-                    "fractional_weight": fractional,
-                    **match,
-                }
-            )
+            for ticker in tickers:
+                rows.append(
+                    {
+                        "article_id": row["article_id"],
+                        "date": row["date"],
+                        "source_type": row["source_type"],
+                        "source": row["source"],
+                        "ticker": ticker,
+                        "title": row["title"],
+                        "url": row.get("url", ""),
+                        "published_at": row["published_at_ts"].isoformat(),
+                        "engagement": row["engagement"],
+                        "fractional_weight": fractional,
+                        **match,
+                    }
+                )
     return pd.DataFrame(rows)
 
 
@@ -211,7 +215,8 @@ def aggregate_daily(raw: pd.DataFrame, matches: pd.DataFrame) -> pd.DataFrame:
     if matches.empty:
         return pd.DataFrame()
     daily = (
-        matches.groupby(["date", "source_type", "sector_group", "theme"], as_index=False)
+        matches.drop_duplicates(["article_id", "date", "source_type", "sector_group", "theme"])
+        .groupby(["date", "source_type", "sector_group", "theme"], as_index=False)
         .agg(
             article_count=("article_id", "nunique"),
             weighted_article_count=("fractional_weight", "sum"),
@@ -279,6 +284,71 @@ TITLE_STOPWORDS = {
 
 def normalize_ticker(value: Any) -> str:
     return str(value or "").strip().upper().replace("/", "-").replace(".", "-")
+
+
+ENTITY_TICKER_ALIASES = {
+    "CRCL": [r"\bCRCL\b", r"\bCircle Internet\b", r"\bCircle\b"],
+    "COIN": [r"\bCOIN\b", r"\bCoinbase\b"],
+    "MSTR": [r"\bMSTR\b", r"\bMicroStrategy\b"],
+    "SMR": [r"\bNuScale\b", r"\bSMR\b"],
+    "OKLO": [r"\bOklo\b", r"\bOKLO\b"],
+    "NNE": [r"\bNano Nuclear\b", r"\bNNE\b"],
+    "CCJ": [r"\bCameco\b", r"\bCCJ\b"],
+    "LEU": [r"\bCentrus Energy\b", r"\bLEU\b"],
+    "BWXT": [r"\bBWX Technologies\b", r"\bBWXT\b"],
+}
+
+
+def source_ticker_is_explicit(row: pd.Series, haystack: str, ticker: str) -> bool:
+    if not ticker or ticker == "NAN":
+        return False
+    if re.search(rf"\b{re.escape(ticker)}\b", haystack, flags=re.IGNORECASE):
+        return True
+    company_name = str(row.get("company_name", "") or "")
+    head = re.split(r"\b(?:Inc|Corporation|Corp|Company|Common|Class|PLC|Ltd|Limited)\b", company_name, flags=re.IGNORECASE)[0]
+    head = re.sub(r"[^A-Za-z0-9 &.-]+", " ", head).strip()
+    if len(head) >= 3 and re.search(rf"\b{re.escape(head)}\b", haystack, flags=re.IGNORECASE):
+        return True
+    aliases = {
+        "NVDA": [r"\bNVIDIA\b"],
+        "AAPL": [r"\bApple\b"],
+        "MSFT": [r"\bMicrosoft\b"],
+        "AMZN": [r"\bAmazon\b"],
+        "GOOG": [r"\bGoogle\b", r"\bAlphabet\b"],
+        "GOOGL": [r"\bGoogle\b", r"\bAlphabet\b"],
+        "META": [r"\bMeta\b"],
+        "TSLA": [r"\bTesla\b"],
+        "INTC": [r"\bIntel\b", r"\bLip-Bu Tan\b"],
+        "ORCL": [r"\bOracle\b"],
+        "AMD": [r"\bAMD\b", r"\bAdvanced Micro Devices\b"],
+        "AVGO": [r"\bBroadcom\b"],
+        "MU": [r"\bMicron\b"],
+        "V": [r"\bVisa\b"],
+        "JPM": [r"\bJPMorgan\b", r"\bJPMorgan Chase\b"],
+        "XOM": [r"\bExxon\b", r"\bExxonMobil\b"],
+        "LLY": [r"\bEli Lilly\b"],
+        "WMT": [r"\bWalmart\b"],
+        "COST": [r"\bCostco\b"],
+    }
+    return any(re.search(pattern, haystack, flags=re.IGNORECASE) for pattern in aliases.get(ticker, []))
+
+
+def infer_mentioned_tickers(row: pd.Series) -> list[str]:
+    haystack = f"{row.get('title', '')} {row.get('text', '')}"
+    tickers = set()
+    source_ticker = normalize_ticker(row.get("ticker", ""))
+    if source_ticker_is_explicit(row, haystack, source_ticker):
+        tickers.add(source_ticker)
+    for ticker, patterns in ENTITY_TICKER_ALIASES.items():
+        if any(re.search(pattern, haystack, flags=re.IGNORECASE) for pattern in patterns):
+            tickers.add(ticker)
+    if re.search(r"\bStrategy\b", haystack, flags=re.IGNORECASE) and re.search(
+        r"\b(Bitcoin|BTC|crypto|digital asset|treasury)\b",
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        tickers.add("MSTR")
+    return sorted(tickers)
 
 
 def title_tokens(title: Any) -> set[str]:

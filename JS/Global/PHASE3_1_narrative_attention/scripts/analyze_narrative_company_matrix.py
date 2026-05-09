@@ -11,6 +11,7 @@ import argparse
 import csv
 import datetime as dt
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -29,7 +30,41 @@ BUCKET_WEIGHT = {
     "enabler": 80.0,
     "adopter": 55.0,
     "sympathetic": 35.0,
+    "explicit_news_linked": 85.0,
+    "api_related_news": 35.0,
     "news_linked": 65.0,
+}
+
+THEME_EXPLICIT_PATTERNS = {
+    "Nuclear Renaissance": {
+        "SMR": [r"\bNuScale\b", r"\bSMR\b"],
+        "OKLO": [r"\bOklo\b", r"\bOKLO\b"],
+        "NNE": [r"\bNano Nuclear\b", r"\bNNE\b"],
+        "CCJ": [r"\bCameco\b", r"\bCCJ\b"],
+        "LEU": [r"\bCentrus Energy\b", r"\bLEU\b"],
+        "BWXT": [r"\bBWX Technologies\b", r"\bBWXT\b"],
+        "NVDA": [r"\bNVIDIA\b", r"\bNVDA\b"],
+        "AMZN": [r"\bAmazon\b", r"\bAMZN\b"],
+        "MSFT": [r"\bMicrosoft\b", r"\bMSFT\b"],
+    },
+    "Stablecoin And Crypto Policy": {
+        "CRCL": [r"\bCRCL\b", r"\bCircle Internet\b", r"\bCircle\b"],
+        "COIN": [r"\bCOIN\b", r"\bCoinbase\b"],
+        "MSTR": [r"\bMSTR\b", r"\bMicroStrategy\b", r"\bStrategy\b"],
+        "V": [r"\bVisa\b"],
+        "MA": [r"\bMastercard\b"],
+        "PYPL": [r"\bPayPal\b"],
+    },
+    "Quantum Computing": {
+        "NVDA": [r"\bNVIDIA\b", r"\bNVDA\b"],
+        "GOOG": [r"\bGoogle\b", r"\bAlphabet\b"],
+        "GOOGL": [r"\bGoogle\b", r"\bAlphabet\b"],
+        "INTC": [r"\bIntel\b", r"\bINTC\b", r"\bLip-Bu Tan\b"],
+        "IONQ": [r"\bIonQ\b", r"\bIONQ\b"],
+        "RGTI": [r"\bRigetti\b", r"\bRGTI\b"],
+        "QBTS": [r"\bD-Wave\b", r"\bQBTS\b"],
+        "QUBT": [r"\bQuantum Computing Inc\b", r"\bQUBT\b"],
+    },
 }
 
 
@@ -90,6 +125,10 @@ def classify_role(row: pd.Series) -> str:
     bucket = row.get("bucket_type")
     article_count = row.get("article_count_7d", 0)
     narrative_type = row.get("theme_narrative_type", "")
+    if bucket == "api_related_news":
+        return "api_related_indirect"
+    if bucket == "explicit_news_linked":
+        return "explicit_news_linked"
     if article_count > 0 and narrative_type == "derivative_mention" and bucket in {"enabler", "adopter", "news_linked"}:
         return "derivative_news_linked"
     if article_count > 0 and bucket == "pure_play":
@@ -101,6 +140,17 @@ def classify_role(row: pd.Series) -> str:
     if bucket == "pure_play":
         return "mapped_pure_play_watch"
     return "mapped_watch"
+
+
+def explicit_mention_count(theme: str, ticker: str, titles: pd.Series) -> int:
+    patterns = THEME_EXPLICIT_PATTERNS.get(theme, {}).get(ticker, [])
+    if not patterns:
+        patterns = [rf"\b{re.escape(ticker)}\b"]
+    count = 0
+    for title in titles.dropna().astype(str):
+        if any(re.search(pattern, title, flags=re.IGNORECASE) for pattern in patterns):
+            count += 1
+    return count
 
 
 def confidence_to_score(confidence: Any) -> float:
@@ -116,7 +166,7 @@ def build_theme_summary(matrix: pd.DataFrame) -> pd.DataFrame:
     rows = []
     for theme, grp in matrix.groupby("theme", sort=False):
         first = grp.iloc[0]
-        linked = grp[grp["article_count_7d"] > 0]
+        linked = grp[grp["company_narrative_role"].eq("explicit_news_linked")]
         mapped_pure = grp[(grp["article_count_7d"] == 0) & (grp["bucket_type"] == "pure_play")]
         linked_top = linked.sort_values("company_narrative_score", ascending=False).head(5)
         pure_top = mapped_pure.sort_values("company_narrative_score", ascending=False).head(5)
@@ -168,9 +218,46 @@ def build_theme_summary(matrix: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows).sort_values("investability_score", ascending=False).reset_index(drop=True)
 
 
-def build_matrix(ranking: pd.DataFrame, debug: pd.DataFrame, beneficiary: pd.DataFrame, mapping: pd.DataFrame) -> pd.DataFrame:
+def merge_ticker_price(merged: pd.DataFrame, price_df: pd.DataFrame) -> pd.DataFrame:
+    ticker_price_cols = [
+        "ticker",
+        "company_name",
+        "sector",
+        "industry",
+        "price_return_5d",
+        "price_return_1m",
+        "price_return_3m",
+        "relative_return_1m_spy",
+        "price_state",
+    ]
+    if price_df.empty or "ticker" not in price_df.columns:
+        return merged
+    price = price_df[[c for c in ticker_price_cols if c in price_df.columns]].dropna(subset=["ticker"])
+    price = price.drop_duplicates(["ticker"], keep="first")
+    merged = merged.merge(price, on="ticker", how="left", suffixes=("", "_ticker"))
+    for col in ticker_price_cols:
+        if col == "ticker":
+            continue
+        ticker_col = f"{col}_ticker"
+        if ticker_col in merged.columns:
+            if col in merged.columns:
+                merged[col] = merged[col].combine_first(merged[ticker_col])
+            else:
+                merged[col] = merged[ticker_col]
+            merged = merged.drop(columns=[ticker_col])
+    return merged
+
+
+def build_matrix(
+    ranking: pd.DataFrame,
+    debug: pd.DataFrame,
+    beneficiary: pd.DataFrame,
+    mapping: pd.DataFrame,
+    price_cache: pd.DataFrame,
+) -> pd.DataFrame:
     debug = debug.copy()
     debug["ticker"] = debug["ticker"].map(normalize_ticker)
+    debug = debug[debug["ticker"].ne("") & debug["ticker"].ne("NAN")].copy()
     debug["published_at_ts"] = pd.to_datetime(debug["published_at"], utc=True, errors="coerce")
     latest_ts = debug["published_at_ts"].max()
     last7 = debug[debug["published_at_ts"] >= latest_ts - pd.Timedelta(days=6)].copy()
@@ -184,13 +271,21 @@ def build_matrix(ranking: pd.DataFrame, debug: pd.DataFrame, beneficiary: pd.Dat
             sample_headlines=("title", lambda s: " | ".join(pd.Series(s).dropna().drop_duplicates().head(3).astype(str))),
         )
     )
-    article_linked["bucket_type"] = "news_linked"
-    article_linked["bucket_weight"] = BUCKET_WEIGHT["news_linked"]
+    explicit_counts = (
+        last7.groupby(["theme", "ticker"])["title"]
+        .apply(lambda s: explicit_mention_count(s.name[0], s.name[1], s))
+        .reset_index(name="explicit_mention_count_7d")
+    )
+    article_linked = article_linked.merge(explicit_counts, on=["theme", "ticker"], how="left")
+    article_linked["explicit_mention_count_7d"] = article_linked["explicit_mention_count_7d"].fillna(0).astype(int)
+    article_linked["bucket_type"] = "api_related_news"
+    article_linked.loc[article_linked["explicit_mention_count_7d"].gt(0), "bucket_type"] = "explicit_news_linked"
+    article_linked["bucket_weight"] = article_linked["bucket_type"].map(BUCKET_WEIGHT).fillna(BUCKET_WEIGHT["news_linked"])
 
     merged = pd.concat(
         [
             article_linked,
-            mapping.assign(article_count_7d=0, source_breadth_7d=0, matched_item_count=0, sample_headlines=""),
+            mapping.assign(article_count_7d=0, source_breadth_7d=0, matched_item_count=0, sample_headlines="", explicit_mention_count_7d=0),
         ],
         ignore_index=True,
     )
@@ -232,38 +327,18 @@ def build_matrix(ranking: pd.DataFrame, debug: pd.DataFrame, beneficiary: pd.Dat
     if not beneficiary.empty:
         price = beneficiary[[c for c in price_cols if c in beneficiary.columns]].drop_duplicates(["theme", "ticker"], keep="first")
         merged = merged.merge(price, on=["theme", "ticker"], how="left")
-        ticker_price_cols = [
-            "ticker",
-            "company_name",
-            "sector",
-            "industry",
-            "price_return_5d",
-            "price_return_1m",
-            "price_return_3m",
-            "relative_return_1m_spy",
-            "price_state",
-        ]
-        ticker_price = (
-            beneficiary[[c for c in ticker_price_cols if c in beneficiary.columns]]
-            .dropna(subset=["ticker"])
-            .drop_duplicates(["ticker"], keep="first")
-        )
-        merged = merged.merge(ticker_price, on="ticker", how="left", suffixes=("", "_ticker"))
-        for col in ticker_price_cols:
-            if col == "ticker":
-                continue
-            ticker_col = f"{col}_ticker"
-            if ticker_col in merged.columns:
-                if col in merged.columns:
-                    merged[col] = merged[col].combine_first(merged[ticker_col])
-                else:
-                    merged[col] = merged[ticker_col]
-                merged = merged.drop(columns=[ticker_col])
+        merged = merge_ticker_price(merged, beneficiary)
+    if not price_cache.empty:
+        merged = merge_ticker_price(merged, price_cache)
 
     merged["bucket_weight"] = merged["bucket_weight"].fillna(BUCKET_WEIGHT["news_linked"])
     merged["article_exposure_pct"] = merged.groupby("theme")["article_count_7d"].transform(percentile)
     merged["source_breadth_pct"] = merged.groupby("theme")["source_breadth_7d"].transform(percentile)
     merged["context_relevance_pct"] = merged.groupby("theme")["matched_item_count"].transform(percentile)
+    api_related_factor = merged["bucket_type"].eq("api_related_news").map({True: 0.25, False: 1.0})
+    merged["article_exposure_effective"] = merged["article_exposure_pct"] * api_related_factor
+    merged["source_breadth_effective"] = merged["source_breadth_pct"] * api_related_factor
+    merged["context_relevance_effective"] = merged["context_relevance_pct"] * api_related_factor
     merged["pure_play_fit"] = merged["bucket_weight"]
     merged["price_confirmation"] = merged.apply(price_confirmation, axis=1)
 
@@ -273,11 +348,11 @@ def build_matrix(ranking: pd.DataFrame, debug: pd.DataFrame, beneficiary: pd.Dat
     )
     mapped_only_penalty = merged["article_count_7d"].eq(0).astype(float) * 12.0
     merged["company_narrative_score"] = (
-        0.35 * merged["article_exposure_pct"]
-        + 0.20 * merged["context_relevance_pct"]
+        0.35 * merged["article_exposure_effective"]
+        + 0.20 * merged["context_relevance_effective"]
         + 0.20 * merged["pure_play_fit"]
         + 0.15 * merged["price_confirmation"]
-        + 0.10 * merged["source_breadth_pct"]
+        + 0.10 * merged["source_breadth_effective"]
         - 0.15 * derivative_penalty
         - 0.15 * mapped_only_penalty
     )
@@ -335,6 +410,7 @@ def write_report(path: Path, matrix: pd.DataFrame, top_themes: int) -> None:
         "company_narrative_score",
         "article_count_7d",
         "source_breadth_7d",
+        "explicit_mention_count_7d",
         "bucket_type",
         "price_return_1m",
         "relative_return_1m_spy",
@@ -375,6 +451,7 @@ def main() -> int:
     parser.add_argument("--ranking", type=Path, default=RESULTS_DIR / "20260503_live_finnhub_37d_top25_v3_latest_theme_ranking.csv")
     parser.add_argument("--debug", type=Path, default=RESULTS_DIR / "20260503_live_finnhub_37d_top25_v3_theme_match_debug.csv")
     parser.add_argument("--beneficiary", type=Path, default=RESULTS_DIR / "20260503_live_finnhub_37d_top25_beneficiary_candidates.csv")
+    parser.add_argument("--price-cache", type=Path, default=None)
     parser.add_argument("--beneficiary-map", type=Path, default=CONFIG_DIR / "theme_beneficiary_map.json")
     parser.add_argument("--top-themes", type=int, default=10)
     parser.add_argument("--output-prefix", default=f"{TODAY_STR}_narrative_company_matrix")
@@ -383,8 +460,9 @@ def main() -> int:
     ranking = pd.read_csv(args.ranking)
     debug = pd.read_csv(args.debug)
     beneficiary = pd.read_csv(args.beneficiary) if args.beneficiary.exists() else pd.DataFrame()
+    price_cache = pd.read_csv(args.price_cache) if args.price_cache and args.price_cache.exists() else pd.DataFrame()
     mapping = flatten_beneficiary_map(load_json(args.beneficiary_map))
-    matrix = build_matrix(ranking, debug, beneficiary, mapping)
+    matrix = build_matrix(ranking, debug, beneficiary, mapping, price_cache)
 
     csv_path = RESULTS_DIR / f"{args.output_prefix}.csv"
     report_path = RESULTS_DIR / f"{args.output_prefix}.md"

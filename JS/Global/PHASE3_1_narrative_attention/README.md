@@ -27,6 +27,7 @@ PHASE3_1_narrative_attention/
 │   └── themes.json
 ├── scripts/
 │   ├── live_attention_collector.py
+│   ├── update_attention_cache.py
 │   └── prototype_attention_from_cache.py
 ├── cache/
 │   ├── raw/
@@ -105,7 +106,44 @@ beneficiary_score =
 
 ## 실행
 
-### Finnhub 37일 baseline 수집
+### 권장 운영: 기존 cache 기반 증분 업데이트
+
+`지금 narrative를 봐줘` 요청 시에는 매번 37일 전체를 새로 받지 않는다.
+
+```text
+기존 raw cache → master_attention_raw.csv 병합/dedup
+master 최신 published_at 확인
+필요한 신규 구간만 수집
+master에 append/dedup
+최신 rolling 37일 raw export
+```
+
+기존 cache만으로 master와 rolling 37일 입력을 다시 만드는 명령:
+
+```bash
+python3 JSInvestment/JS/Global/PHASE3_1_narrative_attention/scripts/update_attention_cache.py \
+  --skip-collect \
+  --rebuild-master
+```
+
+실제 신규 데이터까지 받는 명령:
+
+```bash
+FINNHUB_API_KEY=... python3 JSInvestment/JS/Global/PHASE3_1_narrative_attention/scripts/update_attention_cache.py \
+  --sources finnhub_company,gdelt,reddit \
+  --rebuild-master \
+  --limit 25 \
+  --max-records-per-ticker 300 \
+  --sleep 1.0
+```
+
+주요 출력:
+
+- `cache/raw/master_attention_raw.csv`: 누적 raw master
+- `cache/raw/YYYYMMDD_rolling37_attention_raw.csv`: 분석용 최신 37일 window
+- `cache/raw/YYYYMMDD_incremental_attention_raw.csv`: 이번 실행 신규 수집분
+
+### Finnhub 37일 baseline 단발 수집
 
 ```bash
 FINNHUB_API_KEY=... python3 JSInvestment/JS/Global/PHASE3_1_narrative_attention/scripts/live_attention_collector.py \
@@ -122,8 +160,8 @@ FINNHUB_API_KEY=... python3 JSInvestment/JS/Global/PHASE3_1_narrative_attention/
 
 ```bash
 python3 JSInvestment/JS/Global/PHASE3_1_narrative_attention/scripts/prototype_attention_from_cache.py \
-  --input JSInvestment/JS/Global/PHASE3_1_narrative_attention/cache/raw/20260503_live_finnhub_37d_top25_attention_raw.csv \
-  --output-prefix 20260503_live_finnhub_37d_top25
+  --input JSInvestment/JS/Global/PHASE3_1_narrative_attention/cache/raw/20260505_rolling37_attention_raw.csv \
+  --output-prefix 20260505_rolling37
 ```
 
 ## 최근 산출물

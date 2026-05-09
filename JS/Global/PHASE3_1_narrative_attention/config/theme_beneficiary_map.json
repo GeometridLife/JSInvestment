@@ -27,6 +27,13 @@
     "sympathetic": ["NEE", "SO", "DUK"],
     "keywords": ["power demand", "electric grid", "transformer", "power equipment", "data center power"]
   },
+  "Nuclear Renaissance": {
+    "pure_play": ["SMR", "OKLO", "NNE", "CCJ", "LEU", "BWXT"],
+    "enabler": ["CEG", "VST", "GEV"],
+    "adopter": ["AMZN", "MSFT", "GOOGL", "GOOG", "META", "ORCL"],
+    "sympathetic": ["URA", "URNM", "UEC", "UUUU"],
+    "keywords": ["nuclear power", "SMR", "small modular reactor", "uranium", "nuclear reactor"]
+  },
   "AI Infrastructure": {
     "pure_play": ["NVDA", "AMD", "AVGO", "TSM", "ASML", "ARM"],
     "enabler": ["MU", "MRVL", "ANET", "VRT", "DELL", "SMCI"],
@@ -42,7 +49,7 @@
     "keywords": ["HBM", "high bandwidth memory", "DRAM", "NAND", "memory shortage"]
   },
   "Stablecoin And Crypto Policy": {
-    "pure_play": ["COIN", "MSTR", "RIOT", "MARA", "CLSK"],
+    "pure_play": ["CRCL", "COIN", "MSTR", "RIOT", "MARA", "CLSK"],
     "enabler": ["HOOD", "V", "MA", "PYPL", "SQ"],
     "adopter": ["JPM", "GS", "MS"],
     "sympathetic": ["IBIT", "BITO"],
